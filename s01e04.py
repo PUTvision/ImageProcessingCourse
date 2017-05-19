@@ -39,12 +39,12 @@ def ex_0():
                 cv2.drawContours(img_with_contours, contours, i, colours[i], 3)
 
         cv2.imshow("img", img_with_contours)
-        key = cv2.waitKey(10)
+        key = cv2.waitKey(50)
 
     cv2.destroyAllWindows()
 
 
-def ex_2():
+def ex_1():
     print("Function not implemented yet!")
 
 
