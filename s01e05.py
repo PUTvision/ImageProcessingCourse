@@ -6,7 +6,7 @@ def ex_0():
     img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    fast = cv2.FastFeatureDetector_create(threshold=100, nonmaxSuppression=True)
+    fast = cv2.FastFeatureDetector_create(threshold=50, nonmaxSuppression=False)
     keypoints = fast.detect(img_gray)
     img_with_keypoints = cv2.drawKeypoints(img, keypoints, None, color=(255, 0, 0))
 
@@ -37,7 +37,7 @@ def ex_1():
     img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     #detector = cv2.AKAZE_create()
-    detector = cv2.FastFeatureDetector_create()
+    detector = cv2.FastFeatureDetector_create(threshold=30, nonmaxSuppression=True)
     descriptor = cv2.ORB_create()
 
     kp1 = detector.detect(img1, None)
