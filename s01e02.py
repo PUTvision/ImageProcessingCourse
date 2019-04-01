@@ -142,8 +142,19 @@ def ex_3():
     cv2.destroyAllWindows()
 
 
+def ex_homework():
+    img_color = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
+    img_negative_rgb = 255 - img_color
+    img_negative_grayscale = 255 - cv2.cvtColor(img_color, cv2.COLOR_BGR2GRAY)
+    cv2.imshow('img_negative_rgb', img_negative_rgb)
+    cv2.imshow('img_negative_grayscale', img_negative_grayscale)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
 if __name__ == '__main__':
-    ex_0()
-    ex_1()
-    ex_2()
-    ex_3()
+    # ex_0()
+    # ex_1()
+    # ex_2()
+    # ex_3()
+    ex_homework()
