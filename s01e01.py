@@ -74,6 +74,7 @@ def ex_2():
 
 
 def ex_3():
+    # noinspection PyArgumentList
     cap = cv2.VideoCapture("_data/s01e01/Wildlife.mp4")
 
     key = ord(' ')
