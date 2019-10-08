@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 def ex_0():
-    cap = cv2.VideoCapture(1)  # open the default camera
+    cap = cv2.VideoCapture(0)  # open the default camera
 
     key = ord('a')
 
@@ -42,14 +42,10 @@ def ex_2():
     img_grayscale = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     # TODO 2
-    print('Color image parameters: ' + str(img_color.shape))
-    print('Grayscale image parameters: ' + str(img_grayscale.shape))
+    print(f'Color image parameters: {img_color.shape}')
+    print(f'Grayscale image parameters: {img_grayscale.shape}')
 
-    print('Pixel (220, 270) value color: ' +
-          str(img_color[220, 270]) +
-          ', grayscale: ' +
-          str(img_grayscale[220, 270])
-          )
+    print(f'Pixel (220, 270) value - color: {img_color[220, 270]} , grayscale: {img_grayscale[220, 270]}')
 
     cv2.imshow('img_color', img_color)
     cv2.imshow('img_grayscale', img_grayscale)
@@ -88,7 +84,7 @@ def ex_2():
 
 def ex_3():
     # TODO 6
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     key = ord(' ')
 
