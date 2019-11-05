@@ -66,6 +66,39 @@ def ex_1():
     cv2.destroyAllWindows()
 
 
+def ex_2_new():
+    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+
+    img_blurred_blur = cv2.blur(img, (3, 3), borderType=cv2.BORDER_REFLECT101)
+    kernel = np.full((3, 3), 1/9, np.float)
+    img_blurred_filter2d = cv2.filter2D(img, cv2.CV_8U, kernel, borderType=cv2.BORDER_REFLECT101)
+    print(np.array_equal(img_blurred_blur, img_blurred_filter2d))
+
+    # shape returns different number of values based on the image type
+    height, width = img.shape
+    print(f'height={height}, width={width}')
+    for y in range(0, height):
+        for x in range(0, width):
+            if x % 3 == 0:
+                img[y, x] = 255
+
+    cv2.imshow('img', img)
+    cv2.waitKey(0)
+
+    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
+
+    # shape returns different number of values based on the image type
+    height, width, channels = img.shape
+    print(f'height={height}, width={width}')
+    for y in range(0, height):
+        for x in range(0, width):
+            for c in range(0, 2):
+                img[y, x, c] = 255
+
+    cv2.imshow('img', img)
+    cv2.waitKey(0)
+
+
 def ex_2():
     img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
 
@@ -86,6 +119,8 @@ def ex_2():
     img_stacked = np.hstack((img, img_after_hist_equalization))  # stacking images side-by-side
     cv2.imshow("img_stacked", img_stacked)
     cv2.waitKey(0)
+
+    cv2.destroyAllWindows()
 
 
 clicked_points = []
@@ -133,7 +168,8 @@ def ex_3():
 
 
 if __name__ == "__main__":
-    # ex_0()
-    # ex_1()
+    ex_0()
+    ex_1()
+    ex_2_new()
     # ex_2()
     ex_3()
