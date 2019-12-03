@@ -68,6 +68,44 @@ def task_2():
     cv2.waitKey()
 
 
+def task_2_alternative():
+    colour_image = cv2.imread('_data/s01e08/cars.png')
+    mask = np.zeros_like(cv2.cvtColor(colour_image, cv2.COLOR_BGR2GRAY), dtype=np.int32)
+    image_with_clicks = colour_image.copy()
+    label = 2  # 1 - backrgound
+
+    def on_click(event, x, y, flags, param):
+        nonlocal mask, image_with_clicks, label
+
+        if event == cv2.EVENT_LBUTTONDOWN:
+            mask[y, x] = label
+            cv2.circle(image_with_clicks, (x, y), 5, (255, 0, 0), thickness=2)
+            label += 1
+        if event == cv2.EVENT_RBUTTONDOWN:
+            mask[y, x] = 1
+            cv2.circle(image_with_clicks, (x, y), 5, (255, 0, 255), thickness=2)
+
+    cv2.namedWindow('image_with_clicks')
+    cv2.setMouseCallback('image_with_clicks', on_click)
+
+    segmented_image = colour_image.copy()
+
+    key = ord('a')
+    while key != ord('q'):
+        if key == ord(' '):
+            markers = cv2.watershed(colour_image, mask)
+            print(markers.shape)
+            segmented_image[markers == -1] = [255, 0, 0]
+
+            labels = np.unique(markers)[2:]
+            for label in labels:
+                segmented_image[markers == label] = np.random.rand(3) * 255
+
+        cv2.imshow('image_with_clicks', image_with_clicks)
+        cv2.imshow('segmented_image', segmented_image)
+        key = cv2.waitKey(10)
+
+
 def task_3():
     drawing_rectangle = False
     rectangle_start = None
@@ -114,5 +152,6 @@ def task_3():
 if __name__ == '__main__':
     task_1()
     task_2()
+    task_2_alternative()
     task_3()
 
