@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 def ex_0():
-    cap = cv2.VideoCapture(0)  # open the default camera
+    cap = cv2.VideoCapture(1)  # open the default camera
 
     key = ord('a')
 
@@ -25,21 +25,22 @@ def ex_0():
         key = cv2.waitKey(30)
 
     # When everything done, release the capture
+    cap.release()
     cv2.destroyAllWindows()
 
 
 def ex_1():
     # TODO 1
-    img_from_file = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_from_file = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
     cv2.imshow('img_from_file', img_from_file)
     cv2.waitKey(0)
-    cv2.imwrite('_data/no_idea_grayscale.png', img_from_file)
+    cv2.imwrite('../_data/no_idea_grayscale.png', img_from_file)
     cv2.destroyAllWindows()
 
 
 def ex_2():
-    img_color = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_COLOR)
-    img_grayscale = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_color = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
+    img_grayscale = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     # TODO 2
     print(f'Color image parameters: {img_color.shape}')
@@ -69,7 +70,7 @@ def ex_2():
     plt.show()
 
     # TODO 5
-    img_bgr = cv2.imread('_data/s01e01/AdditiveColor.png', cv2.IMREAD_COLOR)
+    img_bgr = cv2.imread('../_data/s01e01/AdditiveColor.png', cv2.IMREAD_COLOR)
     img_bgr = cv2.resize(img_bgr, (0, 0), fx=0.5, fy=0.5)
 
     b, g, r = cv2.split(img_bgr)
@@ -100,7 +101,7 @@ def ex_3():
 
     # TODO 7
     # noinspection PyArgumentList
-    cap = cv2.VideoCapture('_data/s01e01/Wildlife.mp4')
+    cap = cv2.VideoCapture('../_data/s01e01/Wildlife.mp4')
 
     key = ord(' ')
     ret = True
@@ -121,7 +122,7 @@ def ex_3():
 
 # NOTE(MF): this will be probably moved to a different exercise
 def ex_4():
-    img_color = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_COLOR)
+    img_color = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
     img = cv2.rectangle(img_color, (50, 50), (400, 250), (0, 255, 0), 3)
     cv2.putText(img, 'Umim to', (100, 150), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 3, cv2.LINE_AA)
