@@ -100,7 +100,6 @@ def ex_3():
     cv2.destroyAllWindows()
 
     # TODO 7
-    # noinspection PyArgumentList
     cap = cv2.VideoCapture('../_data/s01e01/Wildlife.mp4')
 
     key = ord(' ')
@@ -120,7 +119,7 @@ def ex_3():
     cv2.destroyAllWindows()
 
 
-# NOTE(MF): this will be probably moved to a different exercise
+# TODO(MF): this will probably be moved to a different exercise
 def ex_4():
     img_color = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
