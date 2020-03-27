@@ -31,12 +31,12 @@ def ex_0():
 
         cv2.destroyAllWindows()
 
-    load_image_and_filer("_data/s01e03/lena_noise.bmp")
-    load_image_and_filer("_data/s01e03/lena_salt_and_pepper.bmp")
+    load_image_and_filer("./../_data/s01e03/lena_noise.bmp")
+    load_image_and_filer("./../_data/s01e03/lena_salt_and_pepper.bmp")
 
 
 def ex_1():
-    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
 
     cv2.namedWindow("img")
     cv2.createTrackbar("threshold", "img", 0, 255, nothing)
@@ -67,7 +67,7 @@ def ex_1():
 
 
 def ex_2_new():
-    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
 
     img_blurred_blur = cv2.blur(img, (3, 3), borderType=cv2.BORDER_REFLECT101)
     kernel = np.full((3, 3), 1/9, np.float)
@@ -85,7 +85,7 @@ def ex_2_new():
     cv2.imshow('img', img)
     cv2.waitKey(0)
 
-    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_COLOR)
 
     # shape returns different number of values based on the image type
     height, width, channels = img.shape
@@ -100,7 +100,7 @@ def ex_2_new():
 
 
 def ex_2():
-    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_COLOR)
 
     color = ('b', 'g', 'r')
     for i, col in enumerate(color):
@@ -109,7 +109,7 @@ def ex_2():
         plt.xlim([0, 255])
     plt.show()
 
-    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
     plt.hist(img.ravel(), 256, [0, 255])
 
     img_after_hist_equalization = cv2.equalizeHist(img)
@@ -134,7 +134,7 @@ def get_points(event, x, y, flags, param):
 
 
 def ex_3():
-    img = cv2.imread("_data/s01e03/road.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread("./../_data/s01e03/road.jpg", cv2.IMREAD_COLOR)
     img = cv2.resize(img, (0, 0), fx=0.25, fy=0.25)
 
     cv2.namedWindow('img')
@@ -171,5 +171,5 @@ if __name__ == "__main__":
     ex_0()
     ex_1()
     ex_2_new()
-    # ex_2()
+    ex_2()
     ex_3()

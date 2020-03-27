@@ -4,7 +4,7 @@ import numpy as np
 
 def ex_0():
     def print_trackbar_value(x):
-        print('Trackbar reporting for duty with value: ' + str(x))
+        print(f'Trackbar reporting for duty with value: {x}')
 
     # Create a black image, a window
     img = np.zeros((300, 512, 3), np.uint8)
@@ -57,7 +57,7 @@ def ex_1():
         else:
             raise ValueError('Wrong value provided. It should be in 0-4 range for threshold')
 
-    img_from_file = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_from_file = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     cv2.namedWindow('img')
     cv2.createTrackbar('threshold', 'img', 0, 255, do_nothing)
@@ -89,7 +89,7 @@ def ex_2():
         else:
             raise ValueError('Wrong value provided. It should be in 0-3 range for resize')
 
-    img_from_file = cv2.imread('_data/s01e02/qr.jpg', cv2.IMREAD_GRAYSCALE)
+    img_from_file = cv2.imread('./../_data/s01e02/qr.jpg', cv2.IMREAD_GRAYSCALE)
     fx = 2.75
     fy = 2.75
 
@@ -123,8 +123,8 @@ def ex_2():
 
 
 def ex_3():
-    img_from_file = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_COLOR)
-    img_logo = cv2.imread('_data/s01e02/LOGO_PUT_VISION_LAB_MAIN.png', cv2.IMREAD_COLOR)
+    img_from_file = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_COLOR)
+    img_logo = cv2.imread('./../_data/s01e02/LOGO_PUT_VISION_LAB_MAIN.png', cv2.IMREAD_COLOR)
     img_logo = cv2.resize(img_logo, (img_from_file.shape[1], img_from_file.shape[0]))
 
     cv2.namedWindow('img')
@@ -143,7 +143,7 @@ def ex_3():
 
 
 def ex_homework():
-    img_color = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
+    img_color = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_COLOR)
     img_negative_rgb = 255 - img_color
     img_negative_grayscale = 255 - cv2.cvtColor(img_color, cv2.COLOR_BGR2GRAY)
     cv2.imshow('img_negative_rgb', img_negative_rgb)
@@ -153,8 +153,8 @@ def ex_homework():
 
 
 if __name__ == '__main__':
-    # ex_0()
-    # ex_1()
-    # ex_2()
-    # ex_3()
+    ex_0()
+    ex_1()
+    ex_2()
+    ex_3()
     ex_homework()
