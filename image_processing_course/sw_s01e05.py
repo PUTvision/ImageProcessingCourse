@@ -8,25 +8,25 @@ def _gradient_operator(
         img: np.ndarray,
         kernel_x: np.ndarray,
         kernel_y: np.ndarray,
-        division_value: int,
+        divider: int,
         window_name_prefix: str
 ):
     img_gradient_x = cv2.filter2D(img, cv2.CV_32F, kernel_x)
     img_gradient_y = cv2.filter2D(img, cv2.CV_32F, kernel_y)
 
-    img_gradient = cv2.sqrt(pow(img_gradient_x / division_value, 2) + pow(img_gradient_y / division_value, 2))
+    img_gradient = cv2.sqrt(pow(img_gradient_x / divider, 2) + pow(img_gradient_y / divider, 2))
 
-    cv2.imshow(f'{window_name_prefix}_x', (abs(img_gradient_x) / division_value).astype(np.uint8))
-    cv2.imshow(f'{window_name_prefix}_x_no_abs', (img_gradient_x / division_value).astype(np.uint8))
-    cv2.imshow(f'{window_name_prefix}_y', (abs(img_gradient_y) / division_value).astype(np.uint8))
+    cv2.imshow(f'{window_name_prefix}_x', (abs(img_gradient_x) / divider).astype(np.uint8))
+    cv2.imshow(f'{window_name_prefix}_x_no_abs', (img_gradient_x / divider).astype(np.uint8))
+    cv2.imshow(f'{window_name_prefix}_y', (abs(img_gradient_y) / divider).astype(np.uint8))
     cv2.waitKey(0)
     cv2.imshow(f'{window_name_prefix}', img_gradient.astype(np.uint8))
     cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
 
 
 def ex_1():
-    img_grayscale = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_grayscale = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     kernel_prewitt_x = np.array(
         [[1, 0, -1],
@@ -58,7 +58,6 @@ def ex_1():
 
     _gradient_operator(img_grayscale, kernel_prewitt_x, kernel_prewitt_y, 3, 'img_prewitt')
     _gradient_operator(img_grayscale, kernel_sobel_x, kernel_sobel_y, 4, 'img_sobel')
-    cv2.destroyAllWindows()
 
 
 def ex_2():
@@ -67,7 +66,7 @@ def ex_2():
 
     window_name = 'Canny'
 
-    img_grayscale = cv2.imread('_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_grayscale = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     cv2.namedWindow(window_name)
     cv2.createTrackbar('threshold1', window_name, 0, 255, trackbar_callback)
@@ -80,14 +79,18 @@ def ex_2():
         img_canny = cv2.Canny(img_grayscale, threshold1, threshold2)
 
         cv2.imshow(window_name, img_canny)
-        cv2.waitKey(100)
+        key = cv2.waitKey(100)
     cv2.destroyAllWindows()
 
 
 def ex_3():
-    img = cv2.imread('_data/sw_s01e05/shapes.jpg', cv2.IMREAD_COLOR)
+    img = cv2.imread('./../_data/sw_s01e05/shapes.jpg', cv2.IMREAD_COLOR)
+    # NOTE(MF): changing size of the image requires modification of parameters.
+    # eg. for HoughLines threhold for accumulator
+    # img = cv2.resize(img, None, fx=0.5, fy=0.5)
     img_grayscale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(img_grayscale, 50, 150, apertureSize=3)
+    cv2.imshow('edges', edges)
 
     img_hough_lines = np.copy(img)
     hough_lines = cv2.HoughLines(edges, 1.5, np.pi / 180, 200)
@@ -127,6 +130,6 @@ def ex_3():
 
 
 if __name__ == '__main__':
-    # ex_1()
-    # ex_2()
+    ex_1()
+    ex_2()
     ex_3()

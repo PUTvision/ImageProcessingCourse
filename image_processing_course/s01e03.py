@@ -157,6 +157,7 @@ def ex_3():
                 src_points[i] = list(clicked_points[i])
 
             perspective_transform = cv2.getPerspectiveTransform(src_points, dst_points)
+            print(f'perspective_transform={perspective_transform}')
             img_dst = cv2.warpPerspective(img, perspective_transform, (500, 500))
             cv2.imshow('img_dst', img_dst)
             clicked_points.clear()
