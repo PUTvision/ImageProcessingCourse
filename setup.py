@@ -12,6 +12,7 @@ setup(
        'opencv-python',
        'numpy',
        'scikit-image',
-       'matplotlib'
+       'matplotlib',
+       'opencv-contrib-python'
    ],
 )
