@@ -79,6 +79,8 @@ def task_2():
 
 def task_2_alternative():
     colour_image = cv2.imread('./../_data/s01e08/cars.png')
+    # colour_image = cv2.imread('./../_data/s01e08/tumor.jpg')
+    
     mask = np.zeros_like(cv2.cvtColor(colour_image, cv2.COLOR_BGR2GRAY), dtype=np.int32)
     image_with_clicks = colour_image.copy()
     label = 2  # 1 - background
@@ -89,6 +91,8 @@ def task_2_alternative():
         if event == cv2.EVENT_LBUTTONDOWN:
             mask[y, x] = label
             cv2.circle(image_with_clicks, (x, y), 5, (255, 0, 0), thickness=2)
+        if event == cv2.EVENT_MBUTTONDOWN:
+            print(f'label: {label}')
             label += 1
         if event == cv2.EVENT_RBUTTONDOWN:
             mask[y, x] = 1
