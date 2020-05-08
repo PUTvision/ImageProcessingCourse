@@ -3,42 +3,49 @@ import cv2
 
 
 def ex_0():
-    img = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_COLOR)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     fast = cv2.FastFeatureDetector_create(threshold=50, nonmaxSuppression=False)
     keypoints = fast.detect(img_gray)
     img_with_keypoints = cv2.drawKeypoints(img, keypoints, None, color=(255, 0, 0))
 
-    cv2.imshow("point feature detector", img_with_keypoints)
+    cv2.imshow('point feature detector', img_with_keypoints)
     cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 def ex_1():
-    #img1 = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
-    #img2 = cv2.imread("_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+    img1 = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img2 = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
-    cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture(0)
+    #
+    # key = ord('a')
+    # while key != ord('q'):
+    #     _, frame = cap.read()
+    #     cv2.imshow("img", frame)
+    #     key = cv2.waitKey(50)
+    # img1 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    key = ord('a')
-    while key != ord('q'):
-        _, frame = cap.read()
-        cv2.imshow("img", frame)
-        key = cv2.waitKey(50)
+    img1 = cv2.imread('./../_data/1b.jpg', cv2.IMREAD_GRAYSCALE)
+    img1 = cv2.resize(img1, None, fx=0.25, fy=0.25)
+    # img1 = cv2.imread("_data/object.png", cv2.IMREAD_GRAYSCALE)
 
-    img1 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # key = ord('a')
+    # while key != ord('q'):
+    #     _, frame = cap.read()
+    #     cv2.imshow("img", frame)
+    #     key = cv2.waitKey(50)
+    # img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    key = ord('a')
-    while key != ord('q'):
-        _, frame = cap.read()
-        cv2.imshow("img", frame)
-        key = cv2.waitKey(50)
-
-    img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    img2 = cv2.imread('./../_data/2b.jpg', cv2.IMREAD_GRAYSCALE)
+    img2 = cv2.resize(img2, None, fx=0.25, fy=0.25)
 
     #detector = cv2.AKAZE_create()
     detector = cv2.FastFeatureDetector_create(threshold=30, nonmaxSuppression=True)
-    descriptor = cv2.ORB_create()
+    # descriptor = cv2.ORB_create()
+    descriptor = cv2.xfeatures2d.BriefDescriptorExtractor_create()
 
     kp1 = detector.detect(img1, None)
     kp2 = detector.detect(img2, None)
@@ -56,15 +63,17 @@ def ex_1():
     matches = sorted(matches, key=lambda x: x.distance)
 
     # Draw first 10 matches.
-    img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:], None)
+    img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:200], None)
 
+    cv2.imwrite('result.png', img3)
     cv2.imshow("matches", img3)
     cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 def ex_2():
-    face_cascade = cv2.CascadeClassifier("_data/s01e05/haarcascade_frontalface_default.xml")
-    eye_cascade = cv2.CascadeClassifier("_data/s01e05/haarcascade_eye.xml")
+    face_cascade = cv2.CascadeClassifier('./../_data/s01e05/haarcascade_frontalface_default.xml')
+    eye_cascade = cv2.CascadeClassifier('./../_data/s01e05/haarcascade_eye.xml')
 
     cap = cv2.VideoCapture(0)
 
@@ -96,8 +105,8 @@ def ex_3():
     cap = cv2.VideoCapture(0)
 
     cv2.namedWindow('img')
-    cv2.createTrackbar('low', 'img', 200, 255, nothing)
-    cv2.createTrackbar('high', 'img', 50, 255, nothing)
+    cv2.createTrackbar('low', 'img', 50, 255, nothing)
+    cv2.createTrackbar('high', 'img', 200, 255, nothing)
 
     key = ord('a')
     while key != ord('q'):
@@ -128,8 +137,9 @@ def ex_3():
         cv2.imshow("in_range", res)
         key = cv2.waitKey(50)
 
+
 if __name__ == "__main__":
     ex_0()
     ex_1()
     ex_2()
-    #ex_3()
+    ex_3()

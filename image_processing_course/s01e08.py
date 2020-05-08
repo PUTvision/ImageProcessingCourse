@@ -6,7 +6,7 @@ def task_1():
     def empty(_):
         pass
 
-    image = cv2.imread('_data/s01e08/tomatoes_and_apples.jpg')
+    image = cv2.imread('./../_data/s01e08/tomatoes_and_apples.jpg')
     image = cv2.resize(image, (image.shape[0] // 2, image.shape[1] // 2), interpolation=cv2.INTER_AREA)
 
     image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -21,7 +21,8 @@ def task_1():
     cv2.createTrackbar('low V', 'image', 0, 255, empty)
     cv2.createTrackbar('high V', 'image', 0, 255, empty)
 
-    while True:
+    key = ord('a')
+    while key != ord('q'):
         low_h = cv2.getTrackbarPos('low H', 'image')
         high_h = cv2.getTrackbarPos('high H', 'image')
         low_s = cv2.getTrackbarPos('low S', 'image')
@@ -30,28 +31,35 @@ def task_1():
         high_v = cv2.getTrackbarPos('high V', 'image')
         threshold = cv2.inRange(image_hsv, (low_h, low_s, low_v), (high_h, high_s, high_v))
         cv2.imshow('threshold', threshold)
-        cv2.waitKey(10)
+        key = cv2.waitKey(10)
+
+    cv2.destroyAllWindows()
 
 
 def task_2():
-    colour_image = cv2.imread('_data/s01e08/cars.png')
+    colour_image = cv2.imread('./../_data/s01e08/cars.png')
     image = cv2.cvtColor(colour_image, cv2.COLOR_BGR2GRAY)
     cv2.imshow('gray', image)
     _, thresholded = cv2.threshold(image, 250, 255, cv2.THRESH_BINARY_INV)
+    cv2.imshow('thresholded', thresholded)
 
     # Sure background area
     kernel = np.ones((3, 3), dtype=np.uint8)
     opened = cv2.morphologyEx(thresholded, cv2.MORPH_OPEN, kernel)
+    cv2.imshow('opened', opened)
 
     sure_background = cv2.dilate(opened, kernel, iterations=2)
-    cv2.imshow('thresh', sure_background)
+    cv2.imshow('sure_background', sure_background)
 
     # Finding sure foreground area
     dist_transform = cv2.distanceTransform(thresholded, cv2.DIST_L2, 5)
     print(np.unique(dist_transform))
     _, sure_foreground = cv2.threshold(dist_transform, 0.4 * dist_transform.max(), 255, 0)
     sure_foreground = sure_foreground.astype(np.uint8)
+    cv2.imshow('sure_foreground', sure_foreground)
+
     unknown = cv2.subtract(sure_background, sure_foreground)
+    cv2.imshow('unknown', unknown)
 
     _, markers = cv2.connectedComponents(sure_foreground)
     markers = markers + 1
@@ -64,15 +72,16 @@ def task_2():
     for label in labels:
         colour_image[markers == label] = np.random.rand(3) * 255
 
-    cv2.imshow('thresholded', colour_image)
-    cv2.waitKey()
+    cv2.imshow('colour_image', colour_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 def task_2_alternative():
-    colour_image = cv2.imread('_data/s01e08/cars.png')
+    colour_image = cv2.imread('./../_data/s01e08/cars.png')
     mask = np.zeros_like(cv2.cvtColor(colour_image, cv2.COLOR_BGR2GRAY), dtype=np.int32)
     image_with_clicks = colour_image.copy()
-    label = 2  # 1 - backrgound
+    label = 2  # 1 - background
 
     def on_click(event, x, y, flags, param):
         nonlocal mask, image_with_clicks, label
@@ -105,6 +114,8 @@ def task_2_alternative():
         cv2.imshow('segmented_image', segmented_image)
         key = cv2.waitKey(10)
 
+    cv2.destroyAllWindows()
+
 
 def task_3():
     drawing_rectangle = False
@@ -128,17 +139,20 @@ def task_3():
     cv2.namedWindow('input')
     cv2.setMouseCallback('input', on_click)
 
-    image = cv2.imread('_data/s01e08/tumor.jpg', cv2.IMREAD_COLOR)
+    image = cv2.imread('./../_data/s01e08/tumor.jpg', cv2.IMREAD_COLOR)
 
     bgd_model = np.zeros((1, 65), np.float64)
     fgd_model = np.zeros((1, 65), np.float64)
-    while True:
+
+    key = ord('a')
+    while key != ord('q'):
         drawn_image = image.copy()
         if rectangle_start is not None and rectangle_end is not None:
             cv2.rectangle(drawn_image, rectangle_start, rectangle_end, (255, 0, 0))
 
         cv2.imshow('input', drawn_image)
-        if cv2.waitKey(10) == ord(' '):
+        key = cv2.waitKey(10)
+        if key == ord(' '):
             mask = np.zeros(image.shape[:2], dtype=np.uint8)
             cv2.grabCut(image, mask, (*rectangle_start, rectangle_end[0] - rectangle_start[0],
                                       rectangle_end[1] - rectangle_start[1]), bgd_model, fgd_model, 5,
@@ -146,7 +160,6 @@ def task_3():
             print(np.unique(mask))
             drawn_image[mask == cv2.GC_PR_FGD] = [0, 255, 0]
             cv2.imshow('segmented', drawn_image)
-            cv2.waitKey()
 
 
 if __name__ == '__main__':
