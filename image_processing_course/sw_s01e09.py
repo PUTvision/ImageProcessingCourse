@@ -3,7 +3,7 @@ import numpy as np
 
 
 def task_1():
-    image = cv2.imread('_data/sw_s01e09/img_21130751_0005.bmp')
+    image = cv2.imread('./../_data/sw_s01e09/img_21130751_0005.bmp')
 
     flag_found, corners = cv2.findChessboardCorners(image, (8, 5))
     print(corners[0])
@@ -19,11 +19,11 @@ def task_1():
 
         # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
         object_points = np.zeros((8 * 5, 3), np.float32)
-        # print(object_points[1])
-        # print(object_points.shape)
+        print(object_points[1])
+        print(object_points.shape)
         object_points[:, :2] = np.mgrid[0:8, 0:5].T.reshape(-1, 2)
-        # print(object_points)
-        # print(object_points.shape)
+        print(object_points)
+        print(object_points.shape)
 
         object_points_for = []#np.zeros_like(object_points)
         for i in range(0, 5):
