@@ -1,4 +1,3 @@
-import numpy as np
 import cv2
 
 
@@ -6,9 +5,19 @@ def ex_0():
     img = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_COLOR)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    fast = cv2.FastFeatureDetector_create(threshold=50, nonmaxSuppression=False)
-    keypoints = fast.detect(img_gray)
-    img_with_keypoints = cv2.drawKeypoints(img, keypoints, None, color=(255, 0, 0))
+    threshold = 50
+
+    fast_no_supression = cv2.FastFeatureDetector_create(threshold=threshold, nonmaxSuppression=False)
+    keypoints_no_supression = fast_no_supression.detect(img_gray)
+    print(f'len(keypoints_no_supression): {len(keypoints_no_supression)}')
+    fast_supression = cv2.FastFeatureDetector_create(threshold=threshold, nonmaxSuppression=True)
+    keypoints_supression = fast_supression.detect(img_gray)
+    print(f'len(keypoints_supression): {len(keypoints_supression)}')
+    img_with_keypoints = cv2.drawKeypoints(img, keypoints_supression, None, color=(255, 0, 0))
+
+    for kp in keypoints_supression[:10]:
+        print(f'kp.angle: {kp.angle}')
+        print(f'kp.response: {kp.response}')
 
     cv2.imshow('point feature detector', img_with_keypoints)
     cv2.waitKey(0)
@@ -42,16 +51,20 @@ def ex_1():
     img2 = cv2.imread('./../_data/2b.jpg', cv2.IMREAD_GRAYSCALE)
     img2 = cv2.resize(img2, None, fx=0.25, fy=0.25)
 
-    #detector = cv2.AKAZE_create()
-    detector = cv2.FastFeatureDetector_create(threshold=30, nonmaxSuppression=True)
+    detector = cv2.AKAZE_create()
+    # detector = cv2.FastFeatureDetector_create(threshold=30, nonmaxSuppression=True)
     # descriptor = cv2.ORB_create()
     descriptor = cv2.xfeatures2d.BriefDescriptorExtractor_create()
+    # descriptor = cv2.AKAZE_create()
+    # descriptor = cv2.BRISK_create()
 
     kp1 = detector.detect(img1, None)
     kp2 = detector.detect(img2, None)
 
-    _, des1 = descriptor.compute(img1, kp1)
-    _, des2 = descriptor.compute(img2, kp2)
+    kp1, des1 = descriptor.compute(img1, kp1)
+    kp2, des2 = descriptor.compute(img2, kp2)
+
+    print(f'des1[0]: {des1[0]}')
 
     #kp1, des1 = detector_descriptor.detectAndCompute(img1, None)
     #kp2, des2 = detector_descriptor.detectAndCompute(img2, None)
@@ -63,10 +76,10 @@ def ex_1():
     matches = sorted(matches, key=lambda x: x.distance)
 
     # Draw first 10 matches.
-    img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:200], None)
+    img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:], None)
 
     cv2.imwrite('result.png', img3)
-    cv2.imshow("matches", img3)
+    cv2.imshow('matches', img3)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
@@ -92,7 +105,7 @@ def ex_2():
             for (ex, ey, ew, eh) in eyes:
                 cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
 
-        cv2.imshow("img", img)
+        cv2.imshow('img', img)
         key = cv2.waitKey(50)
 
     cv2.destroyAllWindows()
@@ -134,11 +147,11 @@ def ex_3():
         cv2.imshow('img_after_low', img_after_low)
         cv2.imshow('img_after_high', img_after_high)
         cv2.imshow('img_after_both', img_after_both)
-        cv2.imshow("in_range", res)
+        cv2.imshow('in_range', res)
         key = cv2.waitKey(50)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ex_0()
     ex_1()
     ex_2()
