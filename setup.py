@@ -9,10 +9,9 @@ setup(
    author_email='michal.fularz@put.poznan.pl',
    packages=['image_processing_course'],
    install_requires=[
-       'opencv-python',
+       'opencv-contrib-python',
        'numpy',
        'scikit-image',
        'matplotlib',
-       'opencv-contrib-python'
    ],
 )

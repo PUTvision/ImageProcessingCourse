@@ -6,7 +6,6 @@ def ex_0():
     cap = cv2.VideoCapture(1)  # open the default camera
 
     key = ord('a')
-
     while key != ord('q'):
         # Capture frame-by-frame
         ret, frame = cap.read()
@@ -26,6 +25,7 @@ def ex_0():
 
     # When everything done, release the capture
     cap.release()
+    # and destroy created windows, so that they are not left for the rest of the program
     cv2.destroyAllWindows()
 
 
@@ -68,6 +68,7 @@ def ex_2():
     cv2.waitKey(1)
     plt.imshow(img_color)
     plt.show()
+    cv2.destroyAllWindows()
 
     # TODO 5
     img_bgr = cv2.imread('../_data/s01e01/AdditiveColor.png', cv2.IMREAD_COLOR)
@@ -81,6 +82,7 @@ def ex_2():
     cv2.imshow('r', r)
 
     _ = cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 def ex_3():
@@ -88,7 +90,6 @@ def ex_3():
     cap = cv2.VideoCapture(0)
 
     key = ord(' ')
-
     # NOTE(MF): thanks to the way key variable is initialized we do not need to load one frame before the loop
     while key != ord('q'):
         if key == ord(' '):
@@ -104,9 +105,7 @@ def ex_3():
 
     key = ord(' ')
     ret = True
-
     while key != ord('q') and ret:
-
         if key == ord(' '):
             ret, frame = cap.read()
             if ret:
