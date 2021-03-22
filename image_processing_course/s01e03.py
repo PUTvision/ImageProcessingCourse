@@ -12,21 +12,21 @@ def ex_0():
     def load_image_and_filer(image_filename):
         img = cv2.imread(image_filename, cv2.IMREAD_COLOR)
 
-        cv2.namedWindow("img")
-        cv2.createTrackbar("kernel_size", "img", 0, 10, nothing)
+        cv2.namedWindow('img')
+        cv2.createTrackbar('kernel_size', 'img', 0, 10, nothing)
 
-        key = ord("a")
-        while key != ord("q"):
-            kernel_size = 1 + 2*cv2.getTrackbarPos("kernel_size", "img")
+        key = ord('a')
+        while key != ord('q'):
+            kernel_size = 1 + 2*cv2.getTrackbarPos('kernel_size', 'img')
 
             img_after_blur = cv2.blur(img, (kernel_size, kernel_size))
             img_after_gaussian = cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
             img_after_median = cv2.medianBlur(img, kernel_size)
 
-            cv2.imshow("img", img)
-            cv2.imshow("img_after_blur", img_after_blur)
-            cv2.imshow("img_after_gaussian", img_after_gaussian)
-            cv2.imshow("img_after_median", img_after_median)
+            cv2.imshow('img', img)
+            cv2.imshow('img_after_blur', img_after_blur)
+            cv2.imshow('img_after_gaussian', img_after_gaussian)
+            cv2.imshow('img_after_median', img_after_median)
             key = cv2.waitKey(10)
 
         cv2.destroyAllWindows()
@@ -36,18 +36,18 @@ def ex_0():
 
 
 def ex_1():
-    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
-    cv2.namedWindow("img")
-    cv2.createTrackbar("threshold", "img", 0, 255, nothing)
-    cv2.createTrackbar("kernel_size", "img", 1, 10, nothing)
-    cv2.createTrackbar("0: erosion, 1: dilation", "img", 0, 1, nothing)
+    cv2.namedWindow('img')
+    cv2.createTrackbar('threshold', 'img', 0, 255, nothing)
+    cv2.createTrackbar('kernel_size', 'img', 1, 10, nothing)
+    cv2.createTrackbar('0: erosion, 1: dilation', 'img', 0, 1, nothing)
 
-    key = ord("a")
-    while key != ord("q"):
-        threshold = cv2.getTrackbarPos("threshold", "img")
-        kernel_size = 1 + 2 * cv2.getTrackbarPos("kernel_size", "img")
-        operation_type = cv2.getTrackbarPos("0: erosion, 1: dilation", "img")
+    key = ord('a')
+    while key != ord('q'):
+        threshold = cv2.getTrackbarPos('threshold', 'img')
+        kernel_size = 1 + 2 * cv2.getTrackbarPos('kernel_size', 'img')
+        operation_type = cv2.getTrackbarPos('0: erosion, 1: dilation', 'img')
 
         _, img_after_threshold = cv2.threshold(img, threshold, 255, cv2.THRESH_BINARY)
 
@@ -58,16 +58,16 @@ def ex_1():
         else:
             img_after_morphological = cv2.dilate(img_after_threshold, kernel, iterations=1)
 
-        cv2.imshow("img", img)
-        cv2.imshow("img_after_threshold", img_after_threshold)
-        cv2.imshow("img_after_morphological", img_after_morphological)
+        cv2.imshow('img', img)
+        cv2.imshow('img_after_threshold', img_after_threshold)
+        cv2.imshow('img_after_morphological', img_after_morphological)
         key = cv2.waitKey(50)
 
     cv2.destroyAllWindows()
 
 
 def ex_2_new():
-    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     img_blurred_blur = cv2.blur(img, (3, 3), borderType=cv2.BORDER_REFLECT101)
     kernel = np.full((3, 3), 1/9, np.float)
@@ -85,7 +85,7 @@ def ex_2_new():
     cv2.imshow('img', img)
     cv2.waitKey(0)
 
-    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
     # shape returns different number of values based on the image type
     height, width, channels = img.shape
@@ -100,7 +100,7 @@ def ex_2_new():
 
 
 def ex_2():
-    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
     color = ('b', 'g', 'r')
     for i, col in enumerate(color):
@@ -109,7 +109,7 @@ def ex_2():
         plt.xlim([0, 255])
     plt.show()
 
-    img = cv2.imread("./../_data/no_idea.jpg", cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
     plt.hist(img.ravel(), 256, [0, 255])
 
     img_after_hist_equalization = cv2.equalizeHist(img)
@@ -117,7 +117,7 @@ def ex_2():
     #plt.show()
 
     img_stacked = np.hstack((img, img_after_hist_equalization))  # stacking images side-by-side
-    cv2.imshow("img_stacked", img_stacked)
+    cv2.imshow('img_stacked', img_stacked)
     cv2.waitKey(0)
 
     cv2.destroyAllWindows()
@@ -134,7 +134,7 @@ def get_points(event, x, y, flags, param):
 
 
 def ex_3():
-    img = cv2.imread("./../_data/s01e03/road.jpg", cv2.IMREAD_COLOR)
+    img = cv2.imread('./../_data/s01e03/road.jpg', cv2.IMREAD_COLOR)
     img = cv2.resize(img, (0, 0), fx=0.25, fy=0.25)
 
     cv2.namedWindow('img')
@@ -144,8 +144,8 @@ def ex_3():
 
     colours = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255), (0, 255, 255)]
 
-    key = ord("a")
-    while key != ord("q"):
+    key = ord('a')
+    while key != ord('q'):
         img_with_points = img.copy()
 
         for i, p in enumerate(clicked_points):
@@ -168,7 +168,7 @@ def ex_3():
     cv2.destroyAllWindows()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ex_0()
     ex_1()
     ex_2_new()
