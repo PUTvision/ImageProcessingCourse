@@ -31,8 +31,8 @@ def ex_0():
 
         cv2.destroyAllWindows()
 
-    load_image_and_filer("./../_data/s01e03/lena_noise.bmp")
-    load_image_and_filer("./../_data/s01e03/lena_salt_and_pepper.bmp")
+    load_image_and_filer('../_data/s01e03/lenna_noise.bmp')
+    load_image_and_filer('../_data/s01e03/lenna_salt_and_pepper.bmp')
 
 
 def ex_1():
