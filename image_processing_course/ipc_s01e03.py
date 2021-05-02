@@ -17,7 +17,7 @@ def ex_0():
 
         key = ord('a')
         while key != ord('q'):
-            kernel_size = 1 + 2*cv2.getTrackbarPos('kernel_size', 'img')
+            kernel_size = 1 + 2*cv2.getTrackbarPos('kernel_size', 'img')  # 1, 3, 5, 7, 9, 11
 
             img_after_blur = cv2.blur(img, (kernel_size, kernel_size))
             img_after_gaussian = cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
