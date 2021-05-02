@@ -42,7 +42,7 @@ def empty_callback(value):
 
 
 def ex_1():
-    # create a black image, a window
+    # create a black image, and a window
     img = np.zeros((300, 512, 3), dtype=np.uint8)
     cv2.namedWindow('image')
 
@@ -76,7 +76,6 @@ def ex_1():
             # assign the same BGR color to all pixels
             img[:] = [b, g, r]
 
-
     # closes all windows (usually optional as the script ends anyway)
     cv2.destroyAllWindows()
 
@@ -90,19 +89,20 @@ def convert_to_threshold_mode(mode: int) -> int:
         return cv2.THRESH_TRUNC
     elif mode == 3:
         return cv2.THRESH_TOZERO
+    elif mode == 4:
+        return cv2.THRESH_TOZERO_INV
     else:
         raise ValueError('Not supported thresholding mode!')
 
 
 def todo_1():
-    img_from_file = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_from_file = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     cv2.namedWindow('img')
     cv2.createTrackbar('threshold', 'img', 0, 255, empty_callback)
     cv2.createTrackbar('mode', 'img', 0, 5, empty_callback)
 
     key = ord('a')
-
     while key != ord('q'):
         t = cv2.getTrackbarPos('threshold', 'img')
         mode = cv2.getTrackbarPos('mode', 'img')
@@ -110,7 +110,8 @@ def todo_1():
         _, img_thresholded = cv2.threshold(img_from_file, t, 255, convert_to_threshold_mode(mode))
 
         cv2.imshow('img', img_thresholded)
-        cv2.waitKey(50)
+        key = cv2.waitKey(50)
+
     cv2.destroyAllWindows()
 
 
@@ -119,10 +120,6 @@ def todo_2():
 
     s = 2.75
 
-    cv2.namedWindow('img')
-    cv2.createTrackbar('threshold', 'img', 0, 255, empty_callback)
-    cv2.createTrackbar('mode', 'img', 0, 5, empty_callback)
-
     img_linear = cv2.resize(img_from_file, dsize=None, fx=s, fy=s, interpolation=cv2.INTER_LINEAR)
     img_nearest = cv2.resize(img_from_file, dsize=None, fx=s, fy=s, interpolation=cv2.INTER_NEAREST)
     img_area = cv2.resize(img_from_file, dsize=None, fx=s, fy=s, interpolation=cv2.INTER_AREA)
@@ -130,7 +127,7 @@ def todo_2():
 
     titles = ['img_from_file', 'img_linear', 'img_nearest', 'img_area', 'img_lanczos']
     images = [img_from_file, img_linear, img_nearest, img_area, img_lanczos]
-    for i in range(5):
+    for i in range(len(titles)):
         plt.subplot(2, 3, i + 1), plt.imshow(images[i], 'gray', vmin=0, vmax=255)
         plt.title(titles[i])
         plt.xticks([]), plt.yticks([])
@@ -146,7 +143,7 @@ def todo_2():
 def ex_3():
     img_from_file = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
-    img_add_cv = cv2.add(img_from_file, 40)#img_from_file *4
+    img_add_cv = cv2.add(img_from_file, 40)
     img_add_float = img_from_file.astype(np.float32) + 40
     img_add = img_from_file + 40
 
@@ -157,6 +154,7 @@ def ex_3():
     cv2.waitKey(0)
 
     cv2.destroyAllWindows()
+
 
 def todo_3():
     img_from_file = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
@@ -175,41 +173,59 @@ def todo_3():
 
         cv2.imshow('img', img_blended)
         key = cv2.waitKey(50)
+
     cv2.destroyAllWindows()
 
 
-def process_image(a: int, img_b: np.ndarray) -> np.ndarray:
-    cap = cv2.VideoCapture(0)
-    # img: np.ndarray = cv2.imread()
+def process_image(img: np.ndarray, value: int) -> np.ndarray:
+    return img + value
 
-    # return img + img_b
+
+def ex_type_annotation():
+    # why there is no method hinting for np.ndarrays returned from opencv funtions?
+    # why it works for VideoCapture?
+    img_1 = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    # no hinting while writing:
+    print(img_1.shape)
+    # because python wrapper for opencv does not use provide type hinting. We can do it on our own:
+    img_2: np.ndarray = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    print(img_2.shape)
+
+    # it works for cv2.VideoCapure because it is a class defined in a python file
+    cap = cv2.VideoCapture(0)
+    cap.isOpened()
+
+    img_3 = process_image(img_1, 50)
+    print(img_3.shape)
 
 
 def homework_2():
     img = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
-    img_my = process_image(5, img)
-    # img_my.shape()
-
-    imgneg = 255-img
+    img_neg_1 = 255-img
     img_neg_2 = cv2.bitwise_not(img)
     while True:
-        cv2.imshow('image', img)
-        cv2.imshow('image_negative', imgneg)
+        cv2.imshow('img', img)
+        cv2.imshow('img_neg_1', img_neg_1)
         cv2.imshow('img_neg_2', img_neg_2)
         key_code = cv2.waitKey(10)
-        if key_code == 27:
+        if key_code == ord('q'):
             # escape key pressed
             break
 
+    cv2.destroyAllWindows()
+
 
 def main():
-    ex_camera()
+    ex_camera_properties()
     ex_1()
     todo_1()
     todo_2()
+    ex_3()
     todo_3()
+    ex_type_annotation()
     homework_2()
+
 
 if __name__ == '__main__':
     main()
