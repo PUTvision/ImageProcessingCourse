@@ -32,8 +32,8 @@ def ex_1():
 
         cv2.destroyAllWindows()
 
-    load_image_and_filer('./_data/s01e03/lenna_noise.bmp')
-    load_image_and_filer('./_data/s01e03/lenna_salt_and_pepper.bmp')
+    load_image_and_filer('../_data/s01e03/lenna_noise.bmp')
+    load_image_and_filer('../_data/s01e03/lenna_salt_and_pepper.bmp')
 
 
 def ex_2():
@@ -41,7 +41,7 @@ def ex_2():
     # [ 0 1 0
     #   1 0 1
     #   0 1 0 ]
-    img = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     cv2.namedWindow('img')
     cv2.createTrackbar('threshold', 'img', 0, 255, empty_callback)
@@ -72,7 +72,7 @@ def ex_2():
 
 
 def ex_3():
-    img: np.ndarray = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_COLOR)
+    img: np.ndarray = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
     if len(img.shape) == 2:
         print('grayscale')

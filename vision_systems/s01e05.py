@@ -12,7 +12,7 @@ def _gradient_operation(
 
 
 def ex_1():
-    img = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     # 255 0 0
     # 255 0 0
@@ -79,7 +79,7 @@ def empty_callback(value):
 
 
 def ex_2():
-    img = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     cv2.namedWindow('canny')
     cv2.createTrackbar('th1', 'canny', 0, 255, empty_callback)
@@ -98,7 +98,7 @@ def ex_2():
 
 
 def ex_3():
-    img_original: np.ndarray = cv2.imread('./_data/sw_s01e05/shapes.jpg')
+    img_original: np.ndarray = cv2.imread('../_data/sw_s01e05/shapes.jpg')
 
     img = img_original.copy()
 
@@ -136,7 +136,7 @@ def ex_3():
 
 
 def ex_4():
-    img_original: np.ndarray = cv2.imread('./_data/sw_s01e05/shapes.jpg')
+    img_original: np.ndarray = cv2.imread('../_data/sw_s01e05/shapes.jpg')
     img = img_original.copy()
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (7, 7), 1.5)

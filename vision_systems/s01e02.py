@@ -3,6 +3,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
+# https://docs.google.com/document/d/111AoZXtdh8aA2yi4HzprencKoS-pNsMQ4IZL3wqHZtw/edit?usp=sharing
+
+
 # 0. CV_CAP_PROP_POS_MSEC Current position of the video file in milliseconds.
 # 1. CV_CAP_PROP_POS_FRAMES 0-based index of the frame to be decoded/captured next.
 # 2. CV_CAP_PROP_POS_AVI_RATIO Relative position of the video file
@@ -23,7 +26,7 @@ from matplotlib import pyplot as plt
 # 17. CV_CAP_PROP_WHITE_BALANCE Currently unsupported
 # 18. CV_CAP_PROP_RECTIFICATION Rectification flag for stereo cameras (note: only supported by DC1394 v 2.x backend currently)
 
-def ex_camera():
+def ex_camera_properties():
     cap = cv2.VideoCapture(0)
     print(f'CAP_PROP_FRAME_WIDTH: {cap.get(cv2.CAP_PROP_FRAME_WIDTH)}')
     print(f'CAP_PROP_BRIGHTNESS: {cap.get(cv2.CAP_PROP_BRIGHTNESS)}')
@@ -92,7 +95,7 @@ def convert_to_threshold_mode(mode: int) -> int:
 
 
 def todo_1():
-    img_from_file = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_from_file = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     cv2.namedWindow('img')
     cv2.createTrackbar('threshold', 'img', 0, 255, empty_callback)
@@ -112,7 +115,7 @@ def todo_1():
 
 
 def todo_2():
-    img_from_file = cv2.imread('./_data/s01e02/qr.jpg', cv2.IMREAD_GRAYSCALE)
+    img_from_file = cv2.imread('../_data/s01e02/qr.jpg', cv2.IMREAD_GRAYSCALE)
 
     s = 2.75
 
@@ -141,7 +144,7 @@ def todo_2():
 
 
 def ex_3():
-    img_from_file = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+    img_from_file = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
     img_add_cv = cv2.add(img_from_file, 40)#img_from_file *4
     img_add_float = img_from_file.astype(np.float32) + 40
@@ -156,8 +159,8 @@ def ex_3():
     cv2.destroyAllWindows()
 
 def todo_3():
-    img_from_file = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_COLOR)
-    img_logo = cv2.imread('./_data/s01e02/LOGO_PUT_VISION_LAB_MAIN.png', cv2.IMREAD_COLOR)
+    img_from_file = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
+    img_logo = cv2.imread('../_data/s01e02/LOGO_PUT_VISION_LAB_MAIN.png', cv2.IMREAD_COLOR)
     img_logo = cv2.resize(img_logo, dsize=(img_from_file.shape[1], img_from_file.shape[0]))
 
     cv2.namedWindow('img')
@@ -177,16 +180,16 @@ def todo_3():
 
 def process_image(a: int, img_b: np.ndarray) -> np.ndarray:
     cap = cv2.VideoCapture(0)
-    img: np.ndarray = cv2.imread()
+    # img: np.ndarray = cv2.imread()
 
-    return img + img_b
+    # return img + img_b
 
 
 def homework_2():
-    img = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_COLOR)
+    img = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
     img_my = process_image(5, img)
-    img_my.shape()
+    # img_my.shape()
 
     imgneg = 255-img
     img_neg_2 = cv2.bitwise_not(img)
@@ -201,11 +204,11 @@ def homework_2():
 
 
 def main():
-    # ex_camera()
-    # ex_1()
-    # todo_1()
-    # todo_2()
-    # todo_3()
+    ex_camera()
+    ex_1()
+    todo_1()
+    todo_2()
+    todo_3()
     homework_2()
 
 if __name__ == '__main__':

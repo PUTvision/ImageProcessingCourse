@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-img_todo_1 = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+img_todo_1 = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
 
 
 def mouse_callback_todo_1(event, x, y, flags, userdata):
@@ -18,7 +18,7 @@ def mouse_callback_todo_1(event, x, y, flags, userdata):
 
 def todo_1():
     global img_todo_1
-    img_todo_1 = cv2.imread('./_data/no_idea.jpg', cv2.IMREAD_COLOR)
+    img_todo_1 = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
 
     cv2.namedWindow('img')
     cv2.setMouseCallback('img', mouse_callback_todo_1)
@@ -44,7 +44,7 @@ def mouse_callback_todo_2(event, x, y, flags, userdata):
 
 def todo_2():
     global pts_1_todo_2, img_todo_2
-    img_todo_2 = cv2.imread('./_data/s01e03/road.jpg')
+    img_todo_2 = cv2.imread('../_data/s01e03/road.jpg')
     img_todo_2 = cv2.resize(img_todo_2, dsize=None, fx=0.5, fy=0.5)
     img_todo_2_original = img_todo_2.copy()
 
@@ -82,11 +82,11 @@ def mouse_callback_todo_3(event, x, y, flags, userdata):
 
 def homework_3():
     global pts_2_todo_3, img_gallery_todo_3
-    img_gallery_todo_3 = cv2.imread('./_data/s01e04/gallery.png')
+    img_gallery_todo_3 = cv2.imread('../_data/s01e04/gallery.png')
     img_gallery_todo_3 = cv2.resize(img_gallery_todo_3, dsize=None, fx=0.5, fy=0.5)
     img_gallery_todo_3_original = img_gallery_todo_3.copy()
 
-    img_pug = cv2.imread('./_data/s01e04/pug.png')
+    img_pug = cv2.imread('../_data/s01e04/pug.png')
     rows, cols, ch = img_pug.shape
 
     # img_mask = np.ones(shape=(img_gallery_todo_3.shape[0], img_gallery_todo_3.shape[1]), dtype=np.uint8)*255

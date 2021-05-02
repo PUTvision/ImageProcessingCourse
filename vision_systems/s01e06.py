@@ -12,7 +12,7 @@ def empty_callback(value):
 def ex_1():
     print('ex1')
 
-    img: np.ndarray = cv2.imread('./_data/sw_s01e06/not_bad.jpg', cv2.IMREAD_COLOR)
+    img: np.ndarray = cv2.imread('../_data/sw_s01e06/not_bad.jpg', cv2.IMREAD_COLOR)
     img_resize = cv2.resize(img, None, fx=0.25, fy=0.25)
     img_grayscale = cv2.cvtColor(img_resize, cv2.COLOR_BGR2GRAY)
 
@@ -59,8 +59,8 @@ def ex_1():
 
 
 def ex_2():
-    haystack: np.ndarray = cv2.resize(cv2.imread('./_data/sw_s01e06/haystack.png'), None, fx=0.5, fy=0.5)
-    needle: np.ndarray = cv2.resize(cv2.imread('./_data/sw_s01e06/needle.png'), None, fx=0.5, fy=0.5)
+    haystack: np.ndarray = cv2.resize(cv2.imread('../_data/sw_s01e06/haystack.png'), None, fx=0.5, fy=0.5)
+    needle: np.ndarray = cv2.resize(cv2.imread('../_data/sw_s01e06/needle.png'), None, fx=0.5, fy=0.5)
 
     cv2.namedWindow('img')
     cv2.createTrackbar('method', 'img', 0, 5, empty_callback)
