@@ -104,12 +104,18 @@ def todo_1():
 
     key = ord('a')
     while key != ord('q'):
-        t = cv2.getTrackbarPos('threshold', 'img')
+        threshold = cv2.getTrackbarPos('threshold', 'img')
         mode = cv2.getTrackbarPos('mode', 'img')
 
-        _, img_thresholded = cv2.threshold(img_from_file, t, 255, convert_to_threshold_mode(mode))
+        _, img_thresholded = cv2.threshold(img_from_file, threshold, 255, convert_to_threshold_mode(mode))
+
+        # alterantive for thresholding
+        img_alternative_thresholding = img_from_file.copy()
+        img_alternative_thresholding[img_from_file < threshold] = 255
+        img_alternative_thresholding[img_from_file >= threshold] = 0
 
         cv2.imshow('img', img_thresholded)
+        cv2.imshow('img_alternative_thresholding', img_alternative_thresholding)
         key = cv2.waitKey(50)
 
     cv2.destroyAllWindows()
