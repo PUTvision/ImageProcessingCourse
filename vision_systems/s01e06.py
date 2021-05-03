@@ -117,7 +117,7 @@ def ex_2():
         cv2.imshow('haystack', haystack)
         cv2.imshow('needle', needle)
         cv2.imshow('img', img_with_template)
-        cv2.waitKey(0)
+        key = cv2.waitKey(0)
 
 
 def main():
