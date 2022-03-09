@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 def ex_0():
-    cap = cv2.VideoCapture(1)  # open the default camera
+    cap = cv2.VideoCapture(0)  # open the default camera
 
     key = ord('a')
     while key != ord('q'):
@@ -118,22 +118,8 @@ def ex_3():
     cv2.destroyAllWindows()
 
 
-# TODO(MF): this will probably be moved to a different exercise
-def ex_4():
-    img_color = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
-
-    img = cv2.rectangle(img_color, (50, 50), (400, 250), (0, 255, 0), 3)
-    cv2.putText(img, 'Umim to', (100, 150), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 3, cv2.LINE_AA)
-
-    cv2.imshow('ex_4', img)
-
-    _ = cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-
 if __name__ == '__main__':
     ex_0()
     ex_1()
     ex_2()
     ex_3()
-    ex_4()
