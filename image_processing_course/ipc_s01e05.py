@@ -1,3 +1,5 @@
+from typing import List
+
 import cv2
 
 
@@ -7,17 +9,18 @@ def ex_0():
 
     threshold = 50
 
-    fast_no_supression = cv2.FastFeatureDetector_create(threshold=threshold, nonmaxSuppression=False)
-    keypoints_no_supression = fast_no_supression.detect(img_gray)
-    print(f'len(keypoints_no_supression): {len(keypoints_no_supression)}')
+    fast_no_supression : cv2.FastFeatureDetector = cv2.FastFeatureDetector_create(threshold=threshold, nonmaxSuppression=False)
+    keypoints_no_supression : List[cv2.KeyPoint] = fast_no_supression.detect(img_gray)
+    print(f'{len(keypoints_no_supression)=}')
     fast_supression = cv2.FastFeatureDetector_create(threshold=threshold, nonmaxSuppression=True)
-    keypoints_supression = fast_supression.detect(img_gray)
-    print(f'len(keypoints_supression): {len(keypoints_supression)}')
+    keypoints_supression : List[cv2.KeyPoint] = fast_supression.detect(img_gray)
+    print(f'{len(keypoints_supression)=}')
     img_with_keypoints = cv2.drawKeypoints(img, keypoints_supression, None, color=(255, 0, 0))
 
-    for kp in keypoints_supression[:10]:
-        print(f'kp.angle: {kp.angle}')
-        print(f'kp.response: {kp.response}')
+    for kp in keypoints_supression[:5]:
+        print(f'{kp.pt=}')
+        print(f'{kp.angle=}')
+        print(f'{kp.response=}')
 
     cv2.imshow('point feature detector', img_with_keypoints)
     cv2.waitKey(0)
@@ -27,6 +30,8 @@ def ex_0():
 def ex_1():
     img1 = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
     img2 = cv2.imread('./../_data/no_idea.jpg', cv2.IMREAD_GRAYSCALE)
+
+    scale = 0.15
 
     # cap = cv2.VideoCapture(0)
     #
@@ -38,7 +43,7 @@ def ex_1():
     # img1 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     img1 = cv2.imread('./../_data/1b.jpg', cv2.IMREAD_GRAYSCALE)
-    img1 = cv2.resize(img1, None, fx=0.25, fy=0.25)
+    img1 = cv2.resize(img1, None, fx=scale, fy=scale)
     # img1 = cv2.imread("_data/object.png", cv2.IMREAD_GRAYSCALE)
 
     # key = ord('a')
@@ -49,7 +54,7 @@ def ex_1():
     # img2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     img2 = cv2.imread('./../_data/2b.jpg', cv2.IMREAD_GRAYSCALE)
-    img2 = cv2.resize(img2, None, fx=0.25, fy=0.25)
+    img2 = cv2.resize(img2, None, fx=scale, fy=scale)
 
     detector = cv2.AKAZE_create()
     # detector = cv2.FastFeatureDetector_create(threshold=30, nonmaxSuppression=True)
@@ -76,7 +81,7 @@ def ex_1():
     matches = sorted(matches, key=lambda x: x.distance)
 
     # Draw first 10 matches.
-    img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:], None)
+    img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:10], None)
 
     cv2.imwrite('result.png', img3)
     cv2.imshow('matches', img3)

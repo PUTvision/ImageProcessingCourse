@@ -52,21 +52,23 @@ def ex_1():
     #  [12  7  0  0  0]
     #  [10  2  0  0  0]]
 
-    print(f'kernel_prewitt_x: {kernel_prewitt_x}')
-    print(f'kernel_prewitt_y: {kernel_prewitt_y}')
+    print(f'kernel_prewitt_x: \n{kernel_prewitt_x}')
+    print(f'kernel_prewitt_y: \n{kernel_prewitt_y}')
 
     img_prewitt_x_int = cv2.filter2D(img, -1, kernel=kernel_prewitt_x)
     img_prewitt_x = cv2.filter2D(img, cv2.CV_32F, kernel=kernel_prewitt_x) / 3
     img_prewitt_y = cv2.filter2D(img, cv2.CV_32F, kernel=kernel_prewitt_y) / 3
 
+    np.set_printoptions(formatter={'float': lambda x: "{0:0.2f}".format(x)})
     print(f'{img_prewitt_x[100:105, 100:105]}')
     print(f'{abs(img_prewitt_x[100:105, 100:105])}')
     print(f'{img_prewitt_x[100:105, 100:105].astype(np.uint8)}')
+    print(f'{img_prewitt_x_int[100:105, 100:105]}')
 
     img_gradient = cv2.sqrt(cv2.pow(img_prewitt_x, 2) + cv2.pow(img_prewitt_y, 2))
 
     cv2.imshow('img', img)
-    cv2.imshow('img_prewitt_x', img_prewitt_x_int)
+    cv2.imshow('img_prewitt_x_int', img_prewitt_x_int)
     cv2.imshow('abs(img_prewitt_x)', abs(img_prewitt_x).astype(np.uint8))
     cv2.imshow('abs(img_prewitt_y)', abs(img_prewitt_y).astype(np.uint8))
     cv2.imshow('img_gradient', img_gradient.astype(np.uint8))
@@ -93,7 +95,7 @@ def ex_2():
 
         cv2.imshow('img', img)
         cv2.imshow('canny', edges)
-        cv2.waitKey(10)
+        key = cv2.waitKey(10)
     cv2.destroyAllWindows()
 
 
@@ -159,9 +161,9 @@ def ex_4():
 
 def main():
     print('Hello ex05!')
-    # ex_1()
-    # ex_2()
-    #ex_3()
+    ex_1()
+    ex_2()
+    ex_3()
     ex_4()
 
 
