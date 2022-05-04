@@ -38,7 +38,7 @@ def ex_camera_properties():
 
 
 def ex_0():
-    def print_trackbar_value(x):
+    def print_trackbar_value(x: int):
         print(f'Trackbar reporting for duty with value: {x}')
 
     # Create a black image, a window
@@ -75,7 +75,7 @@ def ex_0():
     cv2.destroyAllWindows()
 
 
-def do_nothing(x):
+def do_nothing(_):
     pass
 
 

@@ -79,7 +79,7 @@ def ex_1():
 
 
 def ex_2():
-    print('ex1 - template matching')
+    print('ex2 - template matching')
 
     haystack: np.ndarray = cv2.resize(cv2.imread('../_data/sw_s01e06/haystack.png'), None, fx=0.5, fy=0.5)
     needle: np.ndarray = cv2.resize(cv2.imread('../_data/sw_s01e06/needle.png'), None, fx=0.5, fy=0.5)
@@ -101,15 +101,15 @@ def ex_2():
         res = (res - np.min(res)) / (np.max(res) - np.min(res))
         print(f'After normalization: max: {np.max(res)}, min: {np.min(res)}')
 
-        result = np.where(res >= 0.95)
         img_with_template = haystack.copy()
 
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
         top_left = max_loc
         bottom_right = (top_left[0] + w, top_left[1] + h)
-        cv2.rectangle(haystack, top_left, bottom_right, (0, 0, 255), 2)
+        cv2.rectangle(img_with_template, top_left, bottom_right, (0, 0, 255), 2)
 
-        # alternative way:
+        # alternative way for multiple objects:
+        # result = np.where(res >= 0.95)
         # for pt in zip(*result[::-1]):
         #     cv2.rectangle(img_with_template, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
 

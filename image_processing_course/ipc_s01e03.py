@@ -55,12 +55,15 @@ def ex_1():
 
         if operation_type == 0:
             img_after_morphological = cv2.erode(img_after_threshold, kernel, iterations=1)
+            img_after_complementary_morph = cv2.dilate(img_after_morphological, kernel, iterations=1)
         else:
             img_after_morphological = cv2.dilate(img_after_threshold, kernel, iterations=1)
+            img_after_complementary_morph = cv2.erode(img_after_morphological, kernel, iterations=1)
 
         cv2.imshow('img', img)
         cv2.imshow('img_after_threshold', img_after_threshold)
         cv2.imshow('img_after_morphological', img_after_morphological)
+        cv2.imshow('img_after_complementary_morph', img_after_complementary_morph)
         key = cv2.waitKey(50)
 
     cv2.destroyAllWindows()
