@@ -29,6 +29,7 @@ def task_1():
         high_s = cv2.getTrackbarPos('high S', 'image')
         low_v = cv2.getTrackbarPos('low V', 'image')
         high_v = cv2.getTrackbarPos('high V', 'image')
+        # H: 25-50, S: 80-255, V: 0;255
         threshold = cv2.inRange(image_hsv, (low_h, low_s, low_v), (high_h, high_s, high_v))
         cv2.imshow('threshold', threshold)
         key = cv2.waitKey(10)
@@ -64,6 +65,8 @@ def task_2():
     _, markers = cv2.connectedComponents(sure_foreground)
     markers = markers + 1
     markers[unknown == 255] = 0
+    cv2.imshow('markers', (markers*20).astype(np.uint8))
+    print(np.unique(markers))
 
     markers = cv2.watershed(colour_image, markers)
     colour_image[markers == -1] = [255, 0, 0]
@@ -158,12 +161,28 @@ def task_3():
         key = cv2.waitKey(10)
         if key == ord(' '):
             mask = np.zeros(image.shape[:2], dtype=np.uint8)
-            cv2.grabCut(image, mask, (*rectangle_start, rectangle_end[0] - rectangle_start[0],
-                                      rectangle_end[1] - rectangle_start[1]), bgd_model, fgd_model, 5,
-                        cv2.GC_INIT_WITH_RECT)
+
+            print(rectangle_start)
+            print(rectangle_end)
+            print((*rectangle_start, rectangle_end[0] - rectangle_start[0], rectangle_end[1] - rectangle_start[1]))
+
+            # mark just the area around tumor to get it segmented properly
+            cv2.grabCut(
+                image,
+                mask,
+                (*rectangle_start, rectangle_end[0] - rectangle_start[0], rectangle_end[1] - rectangle_start[1]),
+                bgd_model,
+                fgd_model,
+                5,
+                cv2.GC_INIT_WITH_RECT
+            )
             print(np.unique(mask))
-            drawn_image[mask == cv2.GC_PR_FGD] = [0, 255, 0]
-            cv2.imshow('segmented', drawn_image)
+            print(cv2.GC_PR_FGD)
+            segmented_image = image.copy()
+            segmented_image[mask == cv2.GC_PR_FGD] = [0, 255, 0]
+            # segmented_image[mask == cv2.GC_PR_BGD] = [0, 0, 255]
+            # segmented_image[mask == 0] = [255, 0, 255]
+            cv2.imshow('segmented', segmented_image)
 
 
 if __name__ == '__main__':
@@ -171,4 +190,3 @@ if __name__ == '__main__':
     task_2()
     task_2_alternative()
     task_3()
-
