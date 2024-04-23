@@ -6,6 +6,9 @@ def task_1():
     def empty(_):
         pass
 
+    # tomatoes - H: 0-6, S: 90-...
+    # apples - H: 25-50, S: 90-...
+
     image = cv2.imread('./../_data/s01e08/tomatoes_and_apples.jpg')
     image = cv2.resize(image, (image.shape[0] // 2, image.shape[1] // 2), interpolation=cv2.INTER_AREA)
 
@@ -29,7 +32,6 @@ def task_1():
         high_s = cv2.getTrackbarPos('high S', 'image')
         low_v = cv2.getTrackbarPos('low V', 'image')
         high_v = cv2.getTrackbarPos('high V', 'image')
-        # H: 25-50, S: 80-255, V: 0;255
         threshold = cv2.inRange(image_hsv, (low_h, low_s, low_v), (high_h, high_s, high_v))
         cv2.imshow('threshold', threshold)
         key = cv2.waitKey(10)

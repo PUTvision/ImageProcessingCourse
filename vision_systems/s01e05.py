@@ -63,6 +63,7 @@ def ex_1():
     print(f'{img_prewitt_x[100:105, 100:105]}')
     print(f'{abs(img_prewitt_x[100:105, 100:105])}')
     print(f'{img_prewitt_x[100:105, 100:105].astype(np.uint8)}')
+    print(f'{abs(img_prewitt_x[100:105, 100:105]).astype(np.uint8)}')
     print(f'{img_prewitt_x_int[100:105, 100:105]}')
 
     img_gradient = cv2.sqrt(cv2.pow(img_prewitt_x, 2) + cv2.pow(img_prewitt_y, 2))

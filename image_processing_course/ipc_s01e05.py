@@ -14,6 +14,16 @@ def ex_0():
     print(f'{len(keypoints_no_supression)=}')
     fast_supression = cv2.FastFeatureDetector_create(threshold=threshold, nonmaxSuppression=True)
     keypoints_supression : List[cv2.KeyPoint] = fast_supression.detect(img_gray)
+
+    orb = cv2.ORB_create()
+    sift = cv2.xfeatures2d.SIFT_create()
+
+    keypoints_sift = sift.detect(img_gray)
+    keypoints_orb = orb.detect(img_gray)
+
+    img_with_keypoints_sift = cv2.drawKeypoints(img, keypoints_sift, None, color=(255, 0, 0))
+    img_with_keypoints_orb = cv2.drawKeypoints(img, keypoints_orb, None, color=(255, 0, 0))
+
     print(f'{len(keypoints_supression)=}')
     img_with_keypoints = cv2.drawKeypoints(img, keypoints_supression, None, color=(255, 0, 0))
 
@@ -22,7 +32,9 @@ def ex_0():
         print(f'{kp.angle=}')
         print(f'{kp.response=}')
 
-    cv2.imshow('point feature detector', img_with_keypoints)
+    cv2.imshow('point feature detector fast', img_with_keypoints)
+    cv2.imshow('point feature detector orb', img_with_keypoints_orb)
+    cv2.imshow('point feature detector sift', img_with_keypoints_sift)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
@@ -59,6 +71,7 @@ def ex_1():
     detector = cv2.AKAZE_create()
     # detector = cv2.FastFeatureDetector_create(threshold=30, nonmaxSuppression=True)
     # descriptor = cv2.ORB_create()
+    # descriptor = cv2.xfeatures2d.SIFT_create()
     descriptor = cv2.xfeatures2d.BriefDescriptorExtractor_create()
     # descriptor = cv2.AKAZE_create()
     # descriptor = cv2.BRISK_create()
