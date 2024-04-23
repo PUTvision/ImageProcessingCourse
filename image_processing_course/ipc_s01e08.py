@@ -6,8 +6,8 @@ def task_1():
     def empty(_):
         pass
 
-    # tomatoes - H: 0-6, S: 90-...
-    # apples - H: 25-50, S: 90-...
+    # tomatoes - H: 0-10, S: 90-230
+    # apples - H: 25-50, S: 90-230
 
     image = cv2.imread('./../_data/s01e08/tomatoes_and_apples.jpg')
     image = cv2.resize(image, (image.shape[0] // 2, image.shape[1] // 2), interpolation=cv2.INTER_AREA)
