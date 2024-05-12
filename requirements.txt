@@ -6,3 +6,7 @@ scikit-image
 # oak
 blobconverter
 depthai
+depthai-sdk
+depthai-viewer
+av  # for decoding some streams by depthai-sdk
+PySide2  # for graphs using qt
