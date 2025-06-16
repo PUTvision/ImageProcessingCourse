@@ -5,7 +5,7 @@ import sys
 import tempfile
 import venv
 from pathlib import Path
-from typing import Tuple, Dict
+from typing import Tuple, Dict, Any
 import os
 import time
 
@@ -66,6 +66,117 @@ def run_applications(
 
 
 def compute_results(output_directory: Path, result_file_gt: Path) -> Dict[str, float]:
+    """
+    Computes scores for result files in subdirectories of output_directory against a ground truth file.
+
+    The score for each processed directory is the sum of absolute differences for each metric
+    within corresponding video segments. Every video segment (top-level key) present in the
+    ground truth is considered required.
+
+    If a video segment or a specific metric within a segment is present in the ground truth
+    but missing from the processed file, its value in the processed file is treated as 0
+    for the purpose of calculating the absolute difference.
+
+    Args:
+        output_directory (Path): The path to the directory containing subdirectories,
+                                 each expected to hold a result JSON file.
+        result_file_gt (Path): The path to the ground truth JSON file.
+
+    Returns:
+        Dict[str, float]: A dictionary where keys are the names of the processed directories
+                          and values are their calculated scores (sum of absolute differences).
+                          Returns an empty dictionary if the ground truth file cannot be loaded
+                          or no valid result files are found.
+    """
+    scores: Dict[str, float] = {}
+
+    # Load the ground truth data from the specified path.
+    try:
+        with open(result_file_gt, 'r', encoding='utf-8') as f:
+            ground_truth_data: Dict[str, Any] = json.load(f)
+    except FileNotFoundError:
+        print(f"Error: Ground truth file not found at '{result_file_gt}'. Please ensure the path is correct.")
+        return {}
+    except json.JSONDecodeError:
+        print(f"Error: Could not decode JSON from ground truth file '{result_file_gt}'. "
+              "Please check if the file contains valid JSON.")
+        return {}
+    except Exception as e:
+        print(f"An unexpected error occurred while loading ground truth file '{result_file_gt}': {e}")
+        return {}
+
+    # Iterate through all entries within the specified output_directory.
+    for subdir in output_directory.iterdir():
+        # Process only if the entry is a directory.
+        if subdir.is_dir():
+            subdir_name = subdir.name
+            print(f"Processing directory: '{subdir_name}'")
+
+            # Assumption: The result file inside each subdirectory is named 'results.json'.
+            # If your result files have a different name, you will need to change 'results.json' below.
+            result_file_path = subdir / "results.json"
+
+            # Check if the assumed result file exists in the current subdirectory.
+            if not result_file_path.is_file():
+                print(f"  Warning: Result file expected at '{result_file_path}' not found. Skipping '{subdir_name}'.")
+                # If the result file is missing, we still need to calculate a score,
+                # assuming all processed values are 0.
+                processed_data = {} # Treat as empty
+            else:
+                processed_data: Dict[str, Any] = {}
+                # Load the processed data from the result file in the current subdirectory.
+                try:
+                    with open(result_file_path, 'r', encoding='utf-8') as f:
+                        processed_data = json.load(f)
+                except json.JSONDecodeError:
+                    print(f"  Error: Could not decode JSON from '{result_file_path}'. "
+                          "Treating all processed values as 0 for this directory.")
+                    processed_data = {} # Treat as empty for scoring
+                except Exception as e:
+                    print(f"  An unexpected error occurred while reading '{result_file_path}': {e}. "
+                          "Treating all processed values as 0 for this directory.")
+                    processed_data = {} # Treat as empty for scoring
+
+
+            total_score_for_subdir = 0.0
+
+            # Compare ground truth data with the processed data.
+            # We iterate through ALL video segments present in the ground truth, as they are all required.
+            for video_segment_key, gt_metrics in ground_truth_data.items():
+                # Get the metrics for this video segment from the processed data.
+                # If the video segment key is missing in processed_data, this will default to an empty dict.
+                # This ensures that for missing segments, all metrics are treated as 0 in processed_value.
+                processed_metrics = processed_data.get(video_segment_key, {})
+
+                # Iterate through the metrics for this video segment from the ground truth.
+                for metric_key, gt_value in gt_metrics.items():
+                    # Get the processed value for the current metric.
+                    # If the metric key is missing in processed_metrics, default to 0.
+                    processed_value = processed_metrics.get(metric_key, 0)
+
+                    # Calculate the absolute difference for the current metric.
+                    # Ensure values are numeric for subtraction.
+                    try:
+                        diff = abs(float(gt_value) - float(processed_value))
+                        total_score_for_subdir += diff
+                        # Optional: print details of differences
+                        # if diff > 0:
+                        #     print(f"    Difference found in '{video_segment_key}' for '{metric_key}': "
+                        #           f"GT={gt_value}, Processed={processed_value}, Diff={diff}")
+                    except (ValueError, TypeError):
+                        print(f"    Warning: Non-numeric values encountered for '{metric_key}' in "
+                              f"'{video_segment_key}'. GT: {gt_value}, Processed: {processed_value}. "
+                              "Skipping this metric for score calculation.")
+                        continue
+
+            # Store the calculated total score (sum of absolute differences) for the current subdirectory.
+            scores[subdir_name] = total_score_for_subdir
+            print(f"  Total score for '{subdir_name}': {total_score_for_subdir} (sum of absolute differences).")
+
+    return scores
+
+
+def compute_results_old(output_directory: Path, result_file_gt: Path) -> Dict[str, float]:
     global_results = {}
 
     print(result_file_gt)
@@ -140,7 +251,7 @@ def process_application_directory(
                     start_time = time.time()
                     subprocess.run(
                         [interpreter, os.path.abspath(str(application_file)), os.path.abspath(str(input_file))+'\\', os.path.abspath(str(results_file))],
-                        cwd=str(path), stdout=stdout, stderr=stderr, timeout=(10*60+120)
+                        cwd=str(path), stdout=stdout, stderr=stderr, timeout=((6*60+50)*30*0.05 + 600)  # 6 minutes 50 seconds, 30 fps, 0.05 seconds per frame, plus 60s grace period
                     )
                     print("--- %s seconds ---" % (time.time() - start_time))
             except subprocess.TimeoutExpired:
