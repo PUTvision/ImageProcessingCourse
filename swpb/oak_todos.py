@@ -96,15 +96,16 @@ def todo_record():
     from depthai_sdk import OakCamera, RecordType
 
     with OakCamera() as oak:
-        left = oak.camera('left', resolution='480p', fps=10, encode=True)
-        right = oak.camera('right', resolution='480p', fps=10, encode='MJPEG')
+        color = oak.create_camera('color', encode=True)
+        # left = oak.camera('left', resolution='480p', fps=10, encode=True)
+        # right = oak.camera('right', resolution='480p', fps=10, encode='MJPEG')
 
         # Sync & save all (encoded) streams
-        oak.record([left.out.encoded, right.out.encoded], './record')
+        oak.record([color.out.encoded], './record')
         oak.start()
         frames = 0
         while oak.running():
-            if frames > 500:
+            if frames > 100:
                 break
             else:
                 frames += 1

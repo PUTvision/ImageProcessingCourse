@@ -3,7 +3,22 @@ import cv2
 from depthai_sdk import OakCamera
 from depthai_sdk.classes.packets import TrackerPacket
 import depthai as dai
+from depthai_sdk.classes import DetectionPacket
+from depthai_sdk.visualize.visualizer_helper import FramePosition, VisualizerHelper
 
+
+def callback2(packet: DetectionPacket):
+    visualizer = packet.visualizer
+    # print('Detections:', packet.img_detections.detections)
+    VisualizerHelper.print(packet.frame, 'BottomRight!', FramePosition.BottomRight)
+    frame = visualizer.draw(packet.frame)
+    # if len(packet.img_detections.detections) != 0:
+    #     print('asda')
+    for detection in packet.img_detections.detections:
+        print(detection.label)
+        if detection.label == 64:
+            print('DONE!!!')
+    cv2.imshow('Visualizer', frame)
 
 def callback(packet: TrackerPacket):
     for obj_id, tracklets in packet.tracklets.items():
@@ -32,9 +47,8 @@ with OakCamera() as oak:
     )
 
     visualizer = oak.visualize([nn.out.tracker], callback=callback, fps=True)
+    # oak.visualize([nn], fps=True, callback=callback2)
     visualizer.tracking(show_speed=True).text(auto_scale=True)
     # oak.visualize(nn.out.main, fps=True)
-    oak.visualize([nn.out.passthrough, nn.out.spatials])
-    oak.start(blocking=True)
-
+    # oak.visualize([nn.out.passthrough, nn.out.spatials])
     oak.start(blocking=True)
