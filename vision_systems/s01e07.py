@@ -8,7 +8,7 @@ def ex_1():
     img: np.ndarray = cv2.imread('../_data/no_idea.jpg', cv2.IMREAD_COLOR)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    fast: cv2.FastFeatureDetector = cv2.FastFeatureDetector_create(threshold=10, nonmaxSuppression=True)
+    fast: cv2.FastFeatureDetector = cv2.FastFeatureDetector_create(threshold=50, nonmaxSuppression=True)
     print(f'fast nonmaxsuppression status: {fast.getNonmaxSuppression()}')
 
     keypoints_fast = fast.detect(img)
@@ -38,6 +38,7 @@ def ex_2():
     img_2: np.ndarray = cv2.resize(img_2, None, fx=0.2, fy=0.2)
 
     fast: cv2.FastFeatureDetector = cv2.FastFeatureDetector_create(threshold=100, nonmaxSuppression=True)
+
     orb: cv2.ORB = cv2.ORB_create()
     brief = cv2.xfeatures2d.BriefDescriptorExtractor_create()
 
@@ -67,5 +68,5 @@ def ex_2():
 
 
 if __name__ == '__main__':
-    # ex_1()
+    ex_1()
     ex_2()

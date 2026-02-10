@@ -59,11 +59,20 @@ def ex_1():
     img_prewitt_x = cv2.filter2D(img, cv2.CV_32F, kernel=kernel_prewitt_x) / 3
     img_prewitt_y = cv2.filter2D(img, cv2.CV_32F, kernel=kernel_prewitt_y) / 3
 
+    img_sobel_builtin_x = cv2.Sobel(img, cv2.CV_32F, 1, 0, ksize=3)
+    img_sobel_builtin_y = cv2.Sobel(img, cv2.CV_32F, 0, 1, ksize=3)
+
     np.set_printoptions(formatter={'float': lambda x: "{0:0.2f}".format(x)})
-    print(f'{img_prewitt_x[100:105, 100:105]}')
-    print(f'{abs(img_prewitt_x[100:105, 100:105])}')
-    print(f'{img_prewitt_x[100:105, 100:105].astype(np.uint8)}')
-    print(f'{abs(img_prewitt_x[100:105, 100:105]).astype(np.uint8)}')
+    print(f'{img_prewitt_x[100:105, 100:105]=}')
+    print(f'{abs(img_prewitt_x[100:105, 100:105])=}')
+    print(f'{img_prewitt_x[100:105, 100:105].astype(np.uint8)=}')
+    print(f'{abs(img_prewitt_x[100:105, 100:105]).astype(np.uint8)=}')
+
+    # print(f'{img_sobel_builtin_x[100:105, 100:105]=}')
+    # print(f'{abs(img_sobel_builtin_x[100:105, 100:105])=}')
+    # print(f'{img_sobel_builtin_x[100:105, 100:105].astype(np.uint8)=}')
+    # print(f'{abs(img_sobel_builtin_x[100:105, 100:105]).astype(np.uint8)=}')
+
     print(f'{img_prewitt_x_int[100:105, 100:105]}')
 
     img_gradient = cv2.sqrt(cv2.pow(img_prewitt_x, 2) + cv2.pow(img_prewitt_y, 2))
@@ -71,7 +80,10 @@ def ex_1():
     cv2.imshow('img', img)
     cv2.imshow('img_prewitt_x_int', img_prewitt_x_int)
     cv2.imshow('abs(img_prewitt_x)', abs(img_prewitt_x).astype(np.uint8))
+    # cv2.imshow('abs(img_sobel_builtin_x)', abs(img_sobel_builtin_x).astype(np.uint8))
     cv2.imshow('abs(img_prewitt_y)', abs(img_prewitt_y).astype(np.uint8))
+    # cv2.imshow('abs(img_sobel_builtin_y)', abs(img_sobel_builtin_y).astype(np.uint8))
+    # cv2.imshow('sobel_diff', abs(abs(img_sobel_builtin_x) - abs(img_prewitt_x)).astype(np.uint8))
     cv2.imshow('img_gradient', img_gradient.astype(np.uint8))
     cv2.waitKey(0)
     cv2.destroyAllWindows()

@@ -90,5 +90,5 @@ def ex_2():
 
 
 if __name__ == '__main__':
-    # ex_1()
+    ex_1()
     ex_2()
