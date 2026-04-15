@@ -97,22 +97,22 @@ def ex_3():
                         tmp += img[i + k, j + l]
                 cpy[i, j] = np.round(tmp / (window_size*window_size))
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    print("for loop --- %s seconds ---" % (time.time() - start_time))
 
     start_time = time.time()
     for i in range(0, 1000):
         img_blurred = cv2.blur(img, (3, 3))
-    print("--- %s seconds ---" % (time.time() - start_time))
+    print("cv2.blur --- %s seconds ---" % (time.time() - start_time))
 
     start_time = time.time()
     kernel = np.full((3, 3), 1/9, dtype=np.float32)
     for i in range(0, 1000):
         img_filter2d = cv2.filter2D(img, -1, kernel=kernel)
-    print("--- %s seconds ---" % (time.time() - start_time))
+    print("cv2.filter2d --- %s seconds ---" % (time.time() - start_time))
 
-    print(np.array_equal(img_blurred, img_filter2d))
-    print(np.array_equal(img_blurred[1:-1, 1:-1], cpy[1:-1, 1:-1]))
-    print(np.array_equal(cpy[1:-1, 1:-1], img_filter2d[1:-1, 1:-1]))
+    print(f'blur - filter2d same: {np.array_equal(img_blurred, img_filter2d)}')
+    print(f'blur - for loop same: {np.array_equal(img_blurred[1:-1, 1:-1], cpy[1:-1, 1:-1])}')
+    print(f'for loop - filter2d same: {np.array_equal(cpy[1:-1, 1:-1], img_filter2d[1:-1, 1:-1])}')
 
     key = ord('a')
     while key != ord('q'):
@@ -121,16 +121,14 @@ def ex_3():
         cv2.imshow('cpy', cpy)
         cv2.imshow('img_blurred', img_blurred)
         cv2.imshow('img_filter2d', img_filter2d)
-        # cv2.imshow('img_own_blur', img_after_threshold)
-        # cv2.imshow('img_after_morphological', img_after_morphological)
         key = cv2.waitKey(50)
 
     cv2.destroyAllWindows()
 
 
 def main():
-    # ex_1()
-    # ex_2()
+    ex_1()
+    ex_2()
     ex_3()
 
 
