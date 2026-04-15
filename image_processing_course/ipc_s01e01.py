@@ -66,7 +66,22 @@ def ex_2():
     # TODO 4
     cv2.imshow('img_color', img_color)
     cv2.waitKey(1)
+
+    # Convert image to RGB for correct Matplotlib display
+    img_rgb = cv2.cvtColor(img_color, cv2.COLOR_BGR2RGB)
+
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
     plt.imshow(img_color)
+    plt.title('BGR (Incorrect)')
+    plt.xticks([]), plt.yticks([])
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(img_rgb)
+    plt.title('RGB (Correct)')
+    plt.xticks([]), plt.yticks([])
+    plt.tight_layout()
+
     plt.show()
     cv2.destroyAllWindows()
 
