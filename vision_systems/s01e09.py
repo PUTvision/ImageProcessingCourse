@@ -1,69 +1,70 @@
-import os
-
 import cv2
 import numpy as np
 
-# https://docs.google.com/document/d/16-TXEYUkAdvEHEYKYLm71N7pYEFILh6WGOEmxeX79tI/edit?usp=sharing
 
+def task_1():
+    image = cv2.imread('./../_data/sw_s01e09/img_21130751_0005.bmp')
 
-def ex_1():
-    pattern_size = (8, 5)
-    image_size = None
-    number_of_images_to_use = 100
+    flag_found, corners = cv2.findChessboardCorners(image, (8, 5))
+    print(f'len(corners): {len(corners)}')
+    image_with_corners_raw = cv2.drawChessboardCorners(image, (8, 5), corners, flag_found)
+    cv2.imshow('image_with_corners_raw', image_with_corners_raw)
+    cv2.waitKey(0)
 
-    object_points = []
-    for i in range(0, pattern_size[1]):
-        for j in range(0, pattern_size[0]):
-            print(f'i, j: {i}, {j}')
-            object_points.append([j, i, 0])
-    object_points = np.array(object_points, dtype=np.float32)
+    if flag_found:
+        print(corners[0])
 
-    image_points_from_images = []
-    object_points_form_images = []
+        print('Corners found, refining their positions')
+        corners = cv2.cornerSubPix(
+            cv2.cvtColor(image, cv2.COLOR_BGR2GRAY),
+            corners, (11, 11), (-1, -1),
+            (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.1)
+        )
+        print(corners[0])
 
-    for filename in os.listdir('../_data/sw_s01e09/')[:number_of_images_to_use]:
-        print(filename)
-        if filename.endswith('.bmp'):
+        # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
+        object_points = np.zeros((8 * 5, 3), np.float32)
+        print(object_points[1])
+        print(object_points.shape)
+        object_points[:, :2] = np.mgrid[0:8, 0:5].T.reshape(-1, 2)
+        print(object_points[1])
+        print(object_points.shape)
 
-            img_from_file = cv2.imread(f'../_data/sw_s01e09/{filename}', cv2.IMREAD_COLOR)
-            image_size = img_from_file.shape
+        object_points_for = []  # np.zeros_like(object_points)
+        for i in range(0, 5):
+            for j in range(0, 8):
+                # print(object_points_for[i, j])
+                # object_points_for[i, j] = [i, j, 0]
+                object_points_for.append([j, i, 0])
+        object_points_for = np.array(object_points_for, dtype=np.float32)
 
-            pattern_found, corners = cv2.findChessboardCorners(img_from_file, pattern_size)
+        print(f'(object_points[0:3]: {object_points[0:3]}')
+        print(object_points.shape)
+        print(f'object_points_for[0:3]: {object_points_for[0:3]}')
+        print(object_points_for.shape)
 
-            if pattern_found:
-                print(f'corners[0]: {corners[0]}')
-                corners = cv2.cornerSubPix(
-                    cv2.cvtColor(img_from_file, cv2.COLOR_BGR2GRAY),
-                    corners,
-                    winSize=(11, 11),
-                    zeroZone=(-1, -1),
-                    criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.1)
-                )
-                print(f'corners[0] after cornerSubPix: {corners[0]}')
+        image_points = [corners]  # [corners1, corners2, corners3]
+        object_points = [object_points]  # [object_points1, object_points2, object_points3]
+        retval, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(object_points, image_points, image.shape[:2], None, None)
 
-                image_points_from_images.append(corners)
-                object_points_form_images.append(object_points)
+        fovx, fovy, focalLength, principalPoint, aspectRatio = cv2.calibrationMatrixValues(
+            camera_matrix, image.shape[:2], 7.2, 5.4
+        )
+        print(fovx)
+        print(fovy)
+        print(focalLength)
 
-            img_with_corners = cv2.drawChessboardCorners(img_from_file.copy(), pattern_size, corners, pattern_found)
-            cv2.imshow('img_with_corners', img_with_corners)
-            _ = cv2.waitKey(100)
+        img_undistorted = cv2.undistort(image, camera_matrix, dist_coeffs)
+        cv2.imshow('img_undistorted', img_undistorted)
+        cv2.waitKey(0)
 
-    retval, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(object_points_form_images, image_points_from_images, image_size[:2], None, None)
-    print(f'retval: {retval}')
+    else:
+        print('Corners not found')
 
-    for filename in os.listdir('../_data/sw_s01e09/')[:number_of_images_to_use]:
-        print(filename)
-        if filename.endswith('.bmp'):
-            img_from_file = cv2.imread(f'../_data/sw_s01e09/{filename}', cv2.IMREAD_COLOR)
-            img_undistorted = cv2.undistort(img_from_file, camera_matrix, dist_coeffs)
-            cv2.imshow('img_undistorted', img_undistorted)
-            _ = cv2.waitKey(0)
-
-    # cv2.imshow('img', img_from_file)
-    # _ = cv2.waitKey(0)
-
-    cv2.destroyAllWindows()
+    image_with_corners = cv2.drawChessboardCorners(image, (8, 5), corners, flag_found)
+    cv2.imshow('image_with_corners', image_with_corners)
+    cv2.waitKey(0)
 
 
 if __name__ == '__main__':
-    ex_1()
+    task_1()
