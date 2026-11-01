@@ -1,8 +1,6 @@
 # solution for very slow application start when opening camera
 # more details: https://github.com/opencv/opencv/issues/17687
 import os
-os.environ['OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS'] = '0'
-
 import cv2
 import numpy as np
 
@@ -67,5 +65,6 @@ def ex_1():
 
 
 if __name__ == '__main__':
+    os.environ.setdefault('OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS', '0')
     print('Hello lab 10!')
     ex_1()
