@@ -11,12 +11,8 @@ def ex_1():
     image_size = None
     number_of_images_to_use = 100
 
-    object_points = []
-    for i in range(0, pattern_size[1]):
-        for j in range(0, pattern_size[0]):
-            print(f'i, j: {i}, {j}')
-            object_points.append([j, i, 0])
-    object_points = np.array(object_points, dtype=np.float32)
+    object_points = np.zeros((pattern_size[0] * pattern_size[1], 3), np.float32)
+    object_points[:, :2] = np.mgrid[0:pattern_size[0], 0:pattern_size[1]].T.reshape(-1, 2)
 
     image_points_from_images = []
     object_points_form_images = []
